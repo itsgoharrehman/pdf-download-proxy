@@ -1,91 +1,49 @@
-# PDF Download Proxy
+# pdf-download-proxy
 
-A lightweight, high-performance [Cloudflare Worker](https://workers.cloudflare.com/) that acts as a CORS proxy to allow cross-origin fetching and forced downloads of PDF files (and other document types) directly from web applications.
+A lightweight Cloudflare Worker reverse proxy designed to enable cross-origin fetching and forced downloads of PDF documents. Solves browser inline PDF rendering restrictions and cross-origin resource sharing (CORS) header limitations by rewriting HTTP response headers at the edge.
 
-## 🚀 Features
+## Architecture and Stack
 
-- **CORS Support**: Adds `Access-Control-Allow-Origin: *` to enable standard browser `fetch` requests across origins.
-- **Forced Downloads**: Sets `Content-Disposition: attachment` to trigger a file download dialog in the browser instead of inline rendering.
-- **Content-Type Preservation**: Preserves original header `Content-Type` or defaults to `application/pdf`.
-- **Zero-Server Overhead**: Built for Cloudflare Workers—serverless, edge-computed, fast, and free to host.
+* **Runtime**: Cloudflare Workers (V8 JavaScript runtime)
+* **Standard**: Service Worker API / Fetch API
+* **Edge Network**: Cloudflare Global Anycast Network
 
-## 🛠️ Usage
+## Key Features
 
-### API Endpoint
+* **Forced Content-Disposition**: Appends `Content-Disposition: attachment; filename="..."` headers to enforce instant file download dialogs.
+* **Wildcard CORS Management**: Injects `Access-Control-Allow-Origin: *` and standard preflight handling.
+* **Stream Piping**: Streams binary PDF chunks directly from source to client without buffering in worker memory.
 
-```
-GET https://<your-worker-subdomain>.workers.dev/?url=<ENCODED_TARGET_URL>
-```
+## Getting Started
 
-#### Query Parameters
+### Prerequisites
+* Node.js v18+
+* Cloudflare Wrangler CLI (`npm install -g wrangler`)
 
-| Parameter | Type   | Required | Description |
-| --------- | ------ | -------- | ----------- |
-| `url`     | String | Yes      | The URL-encoded target file link to proxy and download. |
-
----
-
-### Code Examples
-
-#### JavaScript (Fetch & Trigger Download)
-
-```javascript
-const proxyUrl = "https://your-worker.workers.dev/?url=";
-const pdfUrl = encodeURIComponent("https://example.com/sample.pdf");
-
-// Option 1: Direct link in HTML
-const downloadLink = document.createElement("a");
-downloadLink.href = proxyUrl + pdfUrl;
-downloadLink.download = "document.pdf";
-document.body.appendChild(downloadLink);
-downloadLink.click();
-```
-
-#### cURL Command
-
+### Deployment
 ```bash
-curl -i "https://your-worker.workers.dev/?url=https%3A%2F%2Fexample.com%2Fsample.pdf"
+git clone https://github.com/itsgoharrehman/pdf-download-proxy.git
+cd pdf-download-proxy
+wrangler login
+wrangler deploy
 ```
 
----
+### Usage
+```text
+https://pdf-download-proxy.<your-subdomain>.workers.dev/?url=https://example.com/document.pdf&filename=custom.pdf
+```
 
-## ⚡ Deployment
+## Security Policy
 
-### Method 1: Cloudflare Dashboard (Quickest)
+Report any proxy abuse or security issues to `goharrehmanfsd260@gmail.com`.
 
-1. Log into your [Cloudflare Dashboard](https://dash.cloudflare.com/).
-2. Navigate to **Workers & Pages** > **Create Application** > **Create Worker**.
-3. Name your worker (e.g., `pdf-download-proxy`).
-4. Click **Deploy**.
-5. Click **Edit Code**, replace the contents of `index.js` with [worker.js](file:///c:/Users/Gohar%20Rehman/Desktop/pdf-download-proxy/worker.js), and click **Save and Deploy**.
+## Maintainer
 
-### Method 2: Wrangler CLI
+* **Gohar Rehman**
+* GitHub: [@itsgoharrehman](https://github.com/itsgoharrehman)
+* Email: `goharrehmanfsd260@gmail.com`
+* Website: [itsgoharrehman.netlify.app](https://itsgoharrehman.netlify.app/)
 
-1. Clone or download this repository.
-2. Install Wrangler if you haven't already:
-   ```bash
-   npm install -g wrangler
-   ```
-3. Authenticate with Cloudflare:
-   ```bash
-   wrangler login
-   ```
-4. Deploy the worker:
-   ```bash
-   npx wrangler deploy worker.js --name pdf-download-proxy
-   ```
+## License
 
----
-
-## 🛡️ Customization & Security
-
-- **Restricting Origins**: By default, `Access-Control-Allow-Origin` is set to `*`. If you want to restrict proxy access to your specific domain only, update [worker.js](file:///c:/Users/Gohar%20Rehman/Desktop/pdf-download-proxy/worker.js):
-  ```javascript
-  'Access-Control-Allow-Origin': 'https://yourwebsite.com'
-  ```
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
