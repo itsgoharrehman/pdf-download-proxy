@@ -1,0 +1,33 @@
+name: Bug Report
+description: Report an issue with proxy streaming, headers, or error handling.
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please provide details to help reproduce and fix this proxy issue.
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Node version, Wrangler version, and target browser.
+      placeholder: "e.g., Node 18.19, Wrangler 3.114, Chrome 124"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Request and Reproduction Steps
+      description: What request URL triggered the issue?
+      placeholder: |
+        GET /?url=https://example.com/test.pdf
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Error Traceback or Description
+      description: Include response headers or console logs.
+    validations:
+      required: true
