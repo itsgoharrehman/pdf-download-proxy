@@ -27,17 +27,17 @@ By rewriting HTTP headers at the edge, the proxy streams binary file chunks dire
 sequenceDiagram
     autonumber
     actor Client as Browser / Web App
-    participant Worker as Cloudflare Worker Edge Proxy (worker.js)
-    participant Origin as Remote Document Server (Storage / S3)
+    participant Worker as Cloudflare Worker Edge Proxy
+    participant Origin as Remote Document Server
 
-    Client->>Worker: GET /?url=https://remote.com/doc.pdf&filename=Manual.pdf
-    Worker->>Worker: Parse & validate remote target URL protocol
-    Worker->>Origin: fetch(targetUrl) (Streaming GET)
-    Origin-->>Worker: HTTP 200 Stream (Binary Body)
-    Worker->>Worker: Inject Content-Disposition: attachment; filename="Manual.pdf"
-    Worker->>Worker: Inject Access-Control-Allow-Origin: *
+    Client->>Worker: HTTP GET target document URL
+    Worker->>Worker: Validate destination URL protocol
+    Worker->>Origin: fetch(targetUrl) Streaming GET
+    Origin-->>Worker: HTTP 200 Stream with binary payload
+    Worker->>Worker: Inject Content-Disposition attachment header
+    Worker->>Worker: Inject Access-Control-Allow-Origin CORS header
     Worker-->>Client: Stream binary payload directly to client
-    Client-->>Client: Browser initiates native save-as download dialog
+    Client-->>Client: Browser initiates native save-as dialog
 ```
 
 ---
