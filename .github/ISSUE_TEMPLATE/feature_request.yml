@@ -1,0 +1,16 @@
+name: Feature Request
+description: Propose an enhancement for streaming proxy capabilities.
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggest an improvement for the proxy worker.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Feature Description
+      description: Describe the proposed capability.
+    validations:
+      required: true
