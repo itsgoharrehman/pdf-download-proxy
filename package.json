@@ -1,0 +1,26 @@
+{
+  "name": "pdf-download-proxy",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker edge reverse proxy for cross-origin document streaming and forced binary attachment downloads.",
+  "main": "worker.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "keywords": [
+    "cloudflare-workers",
+    "cors",
+    "cors-proxy",
+    "edge-computing",
+    "javascript",
+    "pdf",
+    "proxy",
+    "serverless",
+    "streaming"
+  ],
+  "author": "Gohar Rehman <goharrehmanfsd260@gmail.com> (https://github.com/itsgoharrehman)",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.114.0"
+  }
+}
