@@ -2,22 +2,31 @@
 
 ## Supported Versions
 
-| Version | Supported |
-|---|---|
-| Default Branch (main) | Yes |
+| Version | Supported | Security Maintenance |
+| :--- | :--- | :--- |
+| 1.0.x | Yes | Active maintenance |
+| < 1.0.0 | No | Deprecated |
 
-## Reporting a Vulnerability
+---
 
-We take the security of this repository and our software seriously. If you believe you have identified a vulnerability, security flaw, or credential exposure, please report it immediately through private disclosure channels.
+## Vulnerability Disclosure Protocol
+
+If you identify a security defect, open-proxy vulnerability, or Server-Side Request Forgery (SSRF) flaw in this repository, please disclose it privately:
 
 * **Security Contact**: goharrehmanfsd260@gmail.com
-* **Maintainer**: Gohar Rehman (@itsgoharrehman)
+* **Repository Maintainer**: Gohar Rehman (@itsgoharrehman)
+* **Response SLA**: Acknowledgment within 48 hours; resolution plan within 5 business days.
 
-### Vulnerability Report Details
-When reporting a vulnerability, please provide:
-* A detailed description of the issue and potential security impact.
-* Exact step-by-step reproduction instructions or a minimal proof-of-concept.
-* Specific affected files, functions, or endpoints.
+---
 
-### Responsible Disclosure
-Please do not open public GitHub issues or public pull requests detailing undisclosed vulnerabilities. Reports will be acknowledged within 48 hours and investigated promptly.
+## Proxy Security Invariants
+
+### 1. Protocol Validation
+* The proxy must strictly enforce `https://` schemes on target destination URLs.
+* Plaintext `http://`, `file://`, `gopher://`, and internal schemes are forbidden.
+
+### 2. SSRF Mitigation
+* The proxy must not resolve or fetch addresses within local loopback or private IPv4/IPv6 ranges (`127.0.0.1`, `localhost`, `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `169.254.169.254`).
+
+### 3. Zero Memory Buffering
+* All responses must pipe directly using standard `ReadableStream` piping. Workers must not buffer binary file bodies into memory to prevent denial-of-service via resource exhaustion.
