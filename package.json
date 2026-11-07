@@ -21,6 +21,6 @@
   "author": "Gohar Rehman <goharrehmanfsd260@gmail.com> (https://github.com/itsgoharrehman)",
   "license": "MIT",
   "devDependencies": {
-    "wrangler": "^3.114.0"
+    "wrangler": "^4.157.0"
   }
 }
